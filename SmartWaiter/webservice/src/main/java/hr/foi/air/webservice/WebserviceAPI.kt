@@ -3,6 +3,11 @@ package hr.foi.air.webservice
 import hr.foi.air.webservice.model.Korisnik
 import hr.foi.air.webservice.model.Meal
 import hr.foi.air.webservice.model.Restoran
+
+import hr.foi.air.webservice.model.Stol
+
+import hr.foi.air.webservice.model.Tag
+
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.PUT
@@ -75,21 +80,21 @@ interface WebserviceAPI {
         @Query("lokal_id") lokalId: String
 
 
-    ): Response<String>
+    ): String
 
     @GET("sw-api/api.php")
     suspend fun getMeal(
         @Query("tablica") table : String,
         @Query("metoda") method : String,
         @Query("lokal_id") lokal_id: String
-    ): Response<List<Meal>>
+    ): List<Meal>
 
     @GET("sw-api/api.php")
     suspend fun getMealById(
         @Query("tablica") table : String,
         @Query("metoda") method : String,
         @Query("id_stavka") stavka_id: String
-    ): Response<List<Meal>>
+    ): List<Meal>
 
     @GET("sw-api/api.php")
     suspend fun setMealAvailability(
@@ -109,6 +114,36 @@ interface WebserviceAPI {
         @Query("opis") mealDescription: String,
         @Query("slika_path") mealPhotoPath: String,
     )
+
+    @GET("sw-api/api.php")
+
+    suspend fun getTableFromHash(
+        @Query("tablica") table : String,
+        @Query("metoda") method : String,
+        @Query("hash") hash: String
+    ): List<Stol>
+
+    suspend fun getAllTags(
+        @Query("tablica") table : String,
+        @Query("metoda") method : String,
+    ): List<Tag>
+
+    @GET("sw-api/api.php")
+    suspend fun insertTag(
+        @Query("tablica") table : String,
+        @Query("metoda") method : String,
+        @Query("tag") mealName: String,
+    ): String
+
+    @GET("sw-api/api.php")
+    suspend fun bindTag(
+        @Query("tablica") table : String,
+        @Query("metoda") method : String,
+        @Query("stavka_id") stavkaId: String,
+        @Query("tag_id") tagId: String,
+    ): String
+
+
     /*@GET("sw-api/api.php")
     suspend fun getEmail(
         @Query("tablica") table : String,
