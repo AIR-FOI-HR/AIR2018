@@ -4,7 +4,6 @@ import hr.foi.air.webservice.model.*
 
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface WebserviceAPI {
@@ -108,6 +107,30 @@ interface WebserviceAPI {
     ): String
 
     @GET("sw-api/api.php")
+    suspend fun getTables(
+        //@Query("tablica") table : String,
+        @Query("metoda") method : String,
+        //@Query("rezerviran") rezerviran : String,
+        ): Response<List<TableOrder>>
+
+    @GET("sw-api/api.php")
+    suspend fun getOrders(
+        //@Query("tablica") table : String,
+        @Query("metoda") method : String,
+        @Query("stol_id") lokal_id: String
+    ): Response<List<Order2>>
+
+    @GET("sw-api/api.php")
+    suspend fun setOrders(
+        @Query("tablica") table: String,
+        @Query("metoda") method: String,
+        @Query("key") id_stol: Int,
+        @Query("rezerviran") rezerviran: Int
+    )
+
+
+
+    @GET("sw-api/api.php")
     suspend fun getTableFromHash(
         @Query("tablica") table: String,
         @Query("metoda") method: String,
@@ -160,7 +183,7 @@ interface WebserviceAPI {
         @Query("stavka_id") meal_id: Int,
         @Query("kolicina") amount: Int
     ): String
-
+    @GET("sw-api/api.php")
     suspend fun tagsByMeal(
         @Query("funkcija") function : String,
         @Query("meal_id") lokal_id : String,
@@ -171,6 +194,12 @@ interface WebserviceAPI {
         @Query("funkcija") function : String,
         @Query("meal_id") lokal_id : String,
     ): String
+
+    @GET("sw-api/api.php")
+    suspend fun getRestorani2(
+        @Query("tablica") table: String,
+        @Query("metoda") method: String,
+    ): List<Restoran>
 
     /*@GET("sw-api/api.php")
     suspend fun getEmail(
