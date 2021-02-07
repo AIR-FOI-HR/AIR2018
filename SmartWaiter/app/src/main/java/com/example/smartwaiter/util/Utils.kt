@@ -3,7 +3,11 @@ package com.example.smartwaiter.util
 import android.app.Activity
 import android.content.Intent
 import android.view.View
+import androidx.fragment.app.Fragment
+import com.example.smartwaiter.ui.auth.login.HomeFragment
 import com.google.android.material.snackbar.Snackbar
+import hr.foi.air.webservice.util.Resource
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 fun <A : Activity> Activity.startNewActivity(activity: Class<A>) {
     Intent(this, activity).also {
@@ -31,4 +35,19 @@ fun View.snackbar(message: String, action: (() -> Unit)? = null) {
         }
     }
     snackbar.show()
+}
+
+fun Fragment.handleApiError(
+    failure: Resource.Failure,
+    retry: (() -> Unit)? = null
+) {
+    when {
+        failure.isNetworkError -> requireView().snackbar("Check your internet connection", retry)
+        else -> {
+            if (this is HomeFragment) {
+                requireView().editTextUsername.error = "Wrong username"
+                requireView().editTextPassword.error = "Wrong password"
+            }
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package com.example.smartwaiter.repository
 
-import com.example.webservice.util.Resource
+import hr.foi.air.webservice.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.IOException

@@ -1,11 +1,11 @@
 package com.example.smartwaiter.repository
 
-
-import com.example.webservice.RetrofitInstance
-import com.example.webservice.model.Korisnik
+import hr.foi.air.webservice.RetrofitInstance
+import hr.foi.air.webservice.model.Korisnik
+import hr.foi.air.webservice.model.Restoran
 import retrofit2.Response
 
-class RegisterRepository : BaseRepository() {
+class RegisterRepository {
 
     suspend fun RegisterKorisnik(
         table: String,
@@ -29,5 +29,4 @@ class RegisterRepository : BaseRepository() {
     ): Response<List<Korisnik>> {
         return RetrofitInstance.api.getUsername(table, method, username, operator, email)
     }
-
 }

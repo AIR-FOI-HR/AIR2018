@@ -1,7 +1,7 @@
 package com.example.smartwaiter.repository
 
 import com.example.database.UserPreferences
-import com.example.webservice.RetrofitInstance
+import hr.foi.air.webservice.RetrofitInstance
 
 
 class AuthRepository(private val preferences: UserPreferences) : BaseRepository() {
@@ -20,11 +20,5 @@ class AuthRepository(private val preferences: UserPreferences) : BaseRepository(
     suspend fun saveUserType(userType: String) {
         preferences.saveUserType(userType)
     }
-
-    suspend fun saveCustomerID(customerID: String){
-        preferences.saveCustomerID(customerID)
-    }
-
-    suspend fun createCustomer() = safeApiCall { RetrofitInstance.api.createCustomer() }
 
 }

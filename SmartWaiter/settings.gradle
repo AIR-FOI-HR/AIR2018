@@ -1,4 +1,4 @@
-include ':database'
 include ':webservice'
+include ':database'
 include ':app'
-rootProject.name = "Smart Waiter"
+rootProject.name = "SmartWaiter"
