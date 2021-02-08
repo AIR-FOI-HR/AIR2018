@@ -6,6 +6,11 @@
     app:startDestination="@id/qrFragment">
 
     <fragment
+        android:id="@+id/restaurantProfilFragment"
+        android:name="com.example.smartwaiter.ui.restaurant.restaurant_profil.RestaurantProfilFragment"
+        android:label="Profil"
+        tools:layout="@layout/fragment_restaurant_profil" />
+    <fragment
         android:id="@+id/menuDetailsFragment"
         android:name="com.example.smartwaiter.ui.guest.order.MenuDetailsFragment"
         android:label="Details"
@@ -28,6 +33,7 @@
         <action
             android:id="@+id/action_menuGuestDialogFragment_to_waitMealFragment"
             app:destination="@id/waitMealFragment" />
+        <argument android:name="lokal_id" />
     </dialog>
 
     <fragment
@@ -41,6 +47,11 @@
         <action
             android:id="@+id/action_menuGuestFragment_to_menuGuestDialogFragment"
             app:destination="@id/menuGuestDialogFragment" />
+        <argument
+            android:name="tableID"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
@@ -61,6 +72,9 @@
         <action
             android:id="@+id/action_qrFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_qrFragment_to_fragmentManualEntry3"
+            app:destination="@id/fragmentManualEntry3" />
     </fragment>
     <fragment
         android:id="@+id/waitMealFragment"
@@ -73,6 +87,10 @@
         <action
             android:id="@+id/action_waitMealFragment_to_menuGuestFragment"
             app:destination="@id/menuGuestFragment" />
+        <action
+            android:id="@+id/action_waitMealFragment_to_rateRestaurant"
+            app:destination="@id/rateRestaurant" />
+        <argument android:name="lokal_id" />
     </fragment>
 
     <fragment
@@ -81,15 +99,35 @@
         android:label="fragment_payment"
         tools:layout="@layout/fragment_payment" >
         <action
-            android:id="@+id/action_paymentFragment_to_menuGuestFragment"
-            app:destination="@id/menuGuestFragment" />
+            android:id="@+id/action_paymentFragment_to_rateRestaurant"
+            app:destination="@id/rateRestaurant" />
+        <argument android:name="lokal_id" />
     </fragment>
 
-    
+
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.smartwaiter.ui.guest.map.MapFragment"
         android:label="Supported venues" />
+    <fragment
+        android:id="@+id/fragmentManualEntry3"
+        android:name="hr.foi.air.manualentry.FragmentManualEntry"
+        android:label="Ručni unos koda"
+        tools:layout="@layout/fragment_manual_entry">
+        <action
+            android:id="@+id/action_fragmentManualEntry3_to_qrFragment"
+            app:destination="@id/qrFragment" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/rateRestaurant"
+        android:name="com.example.smartwaiter.ui.guest.raterestaurant.RateRestaurant"
+        android:label="Rate this restaurant"
+        tools:layout="@layout/fragment_rate_restaurant">
+        <action
+            android:id="@+id/action_rateRestaurant_to_menuGuestFragment"
+            app:destination="@id/menuGuestFragment" />
+        <argument android:name="lokal_id" />
+    </fragment>
 
 </navigation>

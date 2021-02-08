@@ -8,18 +8,22 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.example.database.UserPreferences
 import com.example.smartwaiter.R
 import com.example.smartwaiter.repository.AuthRepository
 import com.example.smartwaiter.ui.guest.GuestActivity
 import com.example.smartwaiter.ui.restaurant.RestaurantActivity
+import com.example.smartwaiter.ui.waiter.MyFirebaseMessagingService
 import com.example.smartwaiter.ui.waiter.WaiterActivity
 import com.example.smartwaiter.util.enable
 import com.example.smartwaiter.util.handleApiError
 import com.example.smartwaiter.util.startNewActivity
 import com.example.smartwaiter.util.visible
 import com.google.common.hash.Hashing
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import hr.foi.air.webservice.util.Resource
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.launch
@@ -38,6 +42,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         userPreferences = UserPreferences(requireContext())
 
+        Firebase.messaging.subscribeToTopic("ALL")
+
         val repository = AuthRepository(userPreferences)
         val viewModelFactory = HomeViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
@@ -46,20 +52,22 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 is Resource.Success -> {
                     progressBarLogin.visible(false)
                     lifecycleScope.launch {
+                        viewModel.saveUserType(response.value[0].tip_korisnika_id)
+                        viewModel.saveAuthToken(response.value[0].id_korisnik)
                         when (response.value[0].tip_korisnika_id) {
                             "1" -> {
+                                Log.d("danas","da")
                                 viewModel.createCustomer()
-                                requireActivity().startNewActivity(GuestActivity::class.java)
                             }
                             "2" -> {
                                 requireActivity().startNewActivity(WaiterActivity::class.java)
+                                /* Sign up to the restaurants topic */
+                                Firebase.messaging.subscribeToTopic("Lokal"+response.value[0].lokal_id)
                             }
                             "3" -> {
                                 requireActivity().startNewActivity(RestaurantActivity::class.java)
                             }
                         }
-                        viewModel.saveUserType(response.value[0].tip_korisnika_id)
-                        viewModel.saveAuthToken(response.value[0].id_korisnik)
                     }
                 }
 
@@ -78,6 +86,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     Log.d("customer", "Uspjeh: " + it.value.customerID)
                     lifecycleScope.launch {
                         viewModel.saveCustomerID(it.value.customerID)
+                        requireActivity().startNewActivity(GuestActivity::class.java)
                     }
                 }
                 is Resource.Loading -> {}
@@ -110,8 +119,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         viewModel.getKorisnik(
             table = "Korisnik",
             method = "select",
-            username,
-            encryptedPassword
+            username = username,
+            password = encryptedPassword
         )
     }
 }

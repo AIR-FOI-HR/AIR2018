@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
     compileSdkVersion 30
@@ -69,6 +70,7 @@ dependencies {
     //module dependancies
     implementation project (':webservice')
     implementation project (':database')
+    implementation project (':ManualEntry')
 
     // Navigation Component dependencies
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
@@ -108,7 +110,12 @@ dependencies {
     //Lottie animations
     implementation "com.airbnb.android:lottie:3.4.0"
 
+    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
+
     // Stripe Android SDK
     implementation 'com.stripe:stripe-android:16.1.1'
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 
 }

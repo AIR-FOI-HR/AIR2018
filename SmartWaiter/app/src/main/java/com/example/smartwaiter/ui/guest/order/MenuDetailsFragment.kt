@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -29,6 +30,7 @@ class MenuDetailsFragment : Fragment(R.layout.fragment_menu_details) {
     private val args: MenuDetailsFragmentArgs by navArgs()
     private var price: Float? = null
     private var user = 0
+    private var idTable = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,10 +62,16 @@ class MenuDetailsFragment : Fragment(R.layout.fragment_menu_details) {
             }
         })
 
+        userPreferences.tableId.asLiveData().observe(viewLifecycleOwner, {
+            it?.let {
+                idTable = it.toInt()
+            }
+        })
+
         buttonAddMealToOrder.setOnClickListener {
             val simpleDateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm:ss")
             val currentDateAndTime: String = simpleDateFormat.format(Date())
-            val order = Order(user, 6, 1, currentDateAndTime, args.meal.id_stavka.toInt(), multiplier)
+            val order = Order(user, idTable, 1, currentDateAndTime, args.meal.id_stavka.toInt(), multiplier)
             Log.d("Order", order.toString())
             val orderedMeal = OrderedMeal(args.meal, order)
             viewModel.saveOrderedMeal(orderedMeal)

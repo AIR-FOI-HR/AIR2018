@@ -45,6 +45,21 @@ class OrderRepository(val db: SMDatabase, private val preferences: UserPreferenc
         preferences.saveOrderBucket(show)
     }
 
+    suspend fun pushNotification(
+        lokal_id: Int,
+    ) {
+        RetrofitInstance.api.pushNotification("1",lokal_id)
+    }
+
+    suspend fun setOrders(
+        table: String,
+        method: String,
+        id_stol: Int,
+        rezerviran: Int
+    ){
+        return RetrofitInstance.api.setOrders(table, method, id_stol, rezerviran)
+    }
+
 }
 
 
